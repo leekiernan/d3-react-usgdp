@@ -12,8 +12,8 @@ class D3 extends React.Component {
 
 	  this.xScale = d3.scaleTime().range([ margin.left, (width - margin.right) ]);
 	  this.yScale = d3.scaleLinear().range([(height-margin.bottom), margin.top]);
-	  this.xAxis = d3.axisBottom().scale(this.xScale).tickFormat(d3.timeFormat('%Y'));
-	  this.yAxis = d3.axisLeft().scale(this.yScale).tickFormat( n => `$${n}b` );
+	  this.xAxis = d3.axisBottom().scale(this.xScale).tickFormat(d3.timeFormat('%m/%Y'));
+	  this.yAxis = d3.axisLeft().scale(this.yScale).tickFormat( n => `£${n}` );
 
     this.state = { line: '' };
   }
@@ -22,15 +22,18 @@ class D3 extends React.Component {
     const { data } = this.props;
     if (!data) { return; }
 
-    const timeDomain = d3.extent(data, d => new Date(d[0]));
-    const gdp = d3.max(data, d => d[1]);
+    const timeDomain = d3.extent(data, d => new Date(`${d['date']} ${d['time']}`));
+
+    const currency = (price) => price.replace(/[^0-9.-]+/g, '');
+    // const gdp = d3.max(data, d => currency(d['price']));
+    const gdp = d3.extent(data, d => currency(d['price']));
 
     this.xScale.domain(timeDomain);
-    this.yScale.domain([0,gdp]);
+    this.yScale.domain(gdp);
 
     let line = d3.line()
-    	.x(d => this.xScale(new Date(d[0])))
-    	.y(d => this.yScale(d[1]));
+    	.x(d => this.xScale(new Date(`${d['date']} ${d['time']}`)))
+    	.y(d => this.yScale(Math.ceil(currency(d['price']))));
 
     this.setState({line: line(data)});
   }

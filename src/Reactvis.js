@@ -11,8 +11,9 @@ class ReactVis extends React.Component {
 	constructor(props) {
 		super(props);
 
+    const currency = (price) => price.replace(/[^0-9.-]+/g, '');
 		let data = this.props.data.map(el => {
-			return { x: new Date(el[0]).getTime(), y: el[1] };
+			return { x: new Date(el['date']).getTime(), y: +currency(el['price']) };
 		});
 
 		this.state = {

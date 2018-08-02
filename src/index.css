@@ -12,7 +12,7 @@ body {
 
   padding:1rem;
   margin:0;
-  box-shadow:inset 1px 1px 5px 2px darkred;
+  box-shadow:inset 1px 1px 5px 2px #ccc;
 }
 
 #root {
@@ -23,9 +23,12 @@ body {
 .grid {
 	display:grid;
 	grid-gap:1rem;
-	/*grid-template-columns:1fr 1fr 1fr 1fr;*/
 	grid-template-areas:'d3 victory' 'recharts reactvis';
 }
+@media screen and (max-width:1200px) {
+	.grid { grid-template-areas:'d3' 'victory' 'recharts' 'reactvis'; }
+}
+
 
 .grid > section {
 	border:1px solid #eee;
