@@ -17,16 +17,11 @@ class ChartJS extends React.Component {
 		};
 	}
 
-	componentDidMount() {}
-
-	componentDidUpdate(prevProps, prevState, snapshot) {}
-
 	render() {
 		const data = {
 		  labels: ['Scatter'],
-		  datasets: [
-		    {
-		      label: 'data',
+		  datasets: [{
+		      label: '',
 		      fill: false,
 		      backgroundColor: 'rgba(75,192,192,0.4)',
 		      pointBorderColor: 'rgba(75,192,192,1)',
@@ -39,13 +34,23 @@ class ChartJS extends React.Component {
 		      pointRadius: 1,
 		      pointHitRadius: 10,
 		      data: this.state.data
-		    }
-		  ]
+		  }]
 		};
+
+		const opts = {
+			showLines: true,
+			scales: {
+        xAxes: [{
+          type: 'time',
+          distribution: 'series',
+          time: { unit: 'month' }
+        }]
+      }
+		}
 		return (
 			<div>
 				<h2>ChartJS</h2>
-				<Scatter width={600} height={400} data={data} options={{ showLines: true, scales: { xAxes: [{ time: { unit:'month' } }] } }} />
+				<Scatter width={600} height={400} data={data} options={opts} />
 			</div>
 		);
 	}
